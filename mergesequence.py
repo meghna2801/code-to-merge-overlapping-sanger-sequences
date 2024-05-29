@@ -17,6 +17,7 @@ def main():
         with open('leftovers.txt', 'w') as file_check_list:
             for val in sequences:
                 file_check_list.write(val + "\n")
+    
     sys.exit(0)
 
 def build_algorithm(check_sequence, sequences, flag):
@@ -43,8 +44,8 @@ def build_algorithm(check_sequence, sequences, flag):
             idx += 1
     return check_sequence, sequences
 
-def compare_two_sequences(check_sequence, reverse_key, i):
-    return all(check_sequence[i - idx] == reverse_key[idx] for idx in range(len(reverse_key)))
+def compare_two_sequences(val, reverse_key, i):
+    return all(val[i - idx] == reverse_key[idx] for idx in range(len(reverse_key)))
 
 def compare_overlap(check_sequence, val_sequence, i, flag):
     if flag == 0:
@@ -83,3 +84,4 @@ def read_file(filename):
 
 if __name__ == "__main__":
     main()
+
