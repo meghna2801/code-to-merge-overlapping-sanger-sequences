@@ -3,20 +3,29 @@ import sys
 X = 10  # Length for overlap comparison
 
 def main():
-    filename = input("Enter filename with same format as example.txt\n")
-    sequences = read_file(filename)
+    filenames = input("Enter filenames separated by spaces (e.g., file1.txt file2.txt):\n").split()
 
-    if sequences is not None:
-        check_sequence = sequences.pop(0)
-        check_sequence, sequences = build_algorithm(check_sequence, sequences, 0)
-        check_sequence, sequences = build_algorithm(check_sequence, sequences, 1)
-        
-        with open('output.txt', 'w') as file_check_sequence:
-            file_check_sequence.write(check_sequence)
-        
-        with open('leftovers.txt', 'w') as file_check_list:
-            for val in sequences:
-                file_check_list.write(val + "\n")
+    for filename in filenames:
+        sequences = read_file(filename)
+
+        if sequences is not None:
+            check_sequence = sequences.pop(0)
+            check_sequence, sequences = build_algorithm(check_sequence, sequences, 0)
+            check_sequence, sequences = build_algorithm(check_sequence, sequences, 1)
+            
+            output_filename = f'{filename}_output.txt'
+            leftovers_filename = f'{filename}_leftovers.txt'
+
+            with open(output_filename, 'w') as file_check_sequence:
+                file_check_sequence.write(check_sequence)
+            
+            with open(leftovers_filename, 'w') as file_check_list:
+                for val in sequences:
+                    file_check_list.write(val + "\n")
+            
+            print(f"Processed {filename}. Results saved to {output_filename} and {leftovers_filename}.")
+        else:
+            print(f"Skipping file {filename} due to read error.")
     
     sys.exit(0)
 
@@ -61,8 +70,8 @@ def overlap_sequences(check_sequence, val, i, flag):
 
 def read_file(filename):
     try:
-        with open(filename + ".txt", "r") as in_file:
-            print("File opened successfully\n")
+        with open(filename, "r") as in_file:
+            print(f"File {filename} opened successfully\n")
             sequences = []
             sequence_block = ""
 
@@ -79,9 +88,8 @@ def read_file(filename):
 
         return sequences
     except IOError:
-        print("Cannot open file! See example.txt\n")
+        print(f"Cannot open file {filename}! See example.txt\n")
         return None
 
 if __name__ == "__main__":
     main()
-
